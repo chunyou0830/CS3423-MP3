@@ -46,6 +46,9 @@ class Kernel {
 	
 	int CreateFile(char* filename); // fileSystem call
 
+    int Kernel::getPri(int ID);
+
+
 // These are public for notational convenience; really, 
 // they're global variables used everywhere.
 
@@ -68,6 +71,7 @@ class Kernel {
 
 	Thread* t[10];
 	char*   execfile[10];
+    int* priority[10];
 	int execfileNum;
 	int threadNum;
     bool randomSlice;		// enable pseudo-random time slicing
