@@ -141,6 +141,7 @@ class Thread {
     int   priority;
     int   burst;
     int   startBurst;
+    int   startReady;
 
     void StackAllocate(VoidFunctionPtr func, void *arg);
     				// Allocate a stack for thread.
