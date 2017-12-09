@@ -114,7 +114,7 @@ class Thread {
     int getReadyTime();
     void setBurstTime(double t);
     int getBurstTime();
-    void startBurst();
+    void setStartBurst();
     int getstartBurst();
 
   private:

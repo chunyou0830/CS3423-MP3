@@ -523,7 +523,7 @@ Thread::getBurstTime(){
 }
 
 void
-Thread::startBurst(){
+Thread::setStartBurst(){
     startBurst = kernel->stats->totalTicks;
 }
 
