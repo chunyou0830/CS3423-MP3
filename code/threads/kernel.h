@@ -46,7 +46,7 @@ class Kernel {
 	
 	int CreateFile(char* filename); // fileSystem call
 
-    int Kernel::getPri(int ID);
+    int getPri(int ID);
 
 
 // These are public for notational convenience; really, 
