@@ -117,16 +117,6 @@ class Thread {
     void setStartBurst();
     int getStartBurst();
 
-  private:
-    // some of the private data for this class is listed above
-    
-    int *stack; 	 	// Bottom of the stack 
-				// NULL if this is the main thread
-				// (If NULL, don't deallocate stack)
-    ThreadStatus status;	// ready, running or blocked
-    char* name;
-	int   ID;
-
     static int compBurst(Thread* t1, Thread* t2){
         if(t1->getBurstTime() > t2->getBurstTime()) return -1;
         else if(t1->getBurstTime() == t2->getBurstTime()) return 0;
@@ -138,6 +128,16 @@ class Thread {
         else if (t1->getPriority() == t2->getPriority()) return 0;
         else return -1;
     }
+
+  private:
+    // some of the private data for this class is listed above
+    
+    int *stack; 	 	// Bottom of the stack 
+				// NULL if this is the main thread
+				// (If NULL, don't deallocate stack)
+    ThreadStatus status;	// ready, running or blocked
+    char* name;
+	int   ID;
 
     void StackAllocate(VoidFunctionPtr func, void *arg);
     				// Allocate a stack for thread.

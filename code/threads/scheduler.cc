@@ -46,7 +46,10 @@ Scheduler::Scheduler()
 
 Scheduler::~Scheduler()
 { 
-    delete readyList; 
+    //delete readyList; 
+    delete readyListSJF;
+    delete readyListPri;
+    delete readyListRR;
 } 
 
 //----------------------------------------------------------------------
@@ -65,19 +68,20 @@ Scheduler::ReadyToRun (Thread *thread)
 	//cout << "Putting thread on ready list: " << thread->getName() << endl ;
     thread->setStatus(READY);
     //readyList->Append(thread);
+    if(strcmp(thread->getName(), "postal worker")==0) return;
     int cur_priority = thread->getPriority();
 
     if (cur_priority < 50) {
         readyListRR->Append(thread);
-        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << front->getID() << " is inserted into queue L3" << endl;
+        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << thread->getID() << " is inserted into queue L3" << endl;
     }
     else if (cur_priority >= 50 && cur_priority < 100) {
         readyListPri->Insert(thread);
-        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << front->getID() << " is inserted into queue L2" << endl;
+        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << thread->getID() << " is inserted into queue L2" << endl;
     }
     else if (cur_priority >= 100 && cur_priority < 150) {
         readyListSJF->Insert(thread);
-        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << front->getID() << " is inserted into queue L1" << endl;
+        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << thread->getID() << " is inserted into queue L1" << endl;
     }
 }
 
