@@ -108,14 +108,14 @@ class Thread {
     void SelfTest();		// test whether thread impl is working
 
     // Added -----------------------
-    bool Thread::setPriority(int pri);
-    int Thread::getPriority();
-    void Thread::setReadyTime();
-    int Thread::getReadyTime();
-    void Thread::setBurstTime(double t);
-    int Thread::getBurstTime();
-    void Thread::startBurst();
-    int Thread::getstartBurst();
+    bool setPriority(int pri);
+    int getPriority();
+    void setReadyTime();
+    int getReadyTime();
+    void setBurstTime(double t);
+    int getBurstTime();
+    void startBurst();
+    int getstartBurst();
 
   private:
     // some of the private data for this class is listed above
