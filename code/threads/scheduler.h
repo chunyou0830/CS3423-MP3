@@ -31,6 +31,8 @@ class Scheduler {
     void CheckToBeDestroyed();// Check if thread that had been
     				// running needs to be deleted
     void Print();		// Print contents of ready list
+
+    void Aging(SortedList<Thread *>* li1, SortedList<Thread *>* li2, List<Thread *>* li3);
     
     // SelfTest for scheduler is implemented in class Thread
     

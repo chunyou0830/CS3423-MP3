@@ -115,7 +115,7 @@ class Thread {
     void setBurstTime(double t);
     int getBurstTime();
     void setStartBurst();
-    int getstartBurst();
+    int getStartBurst();
 
   private:
     // some of the private data for this class is listed above

@@ -528,6 +528,6 @@ Thread::setStartBurst(){
 }
 
 int
-Thread::getstartBurst(){
+Thread::getStartBurst(){
     return startBurst;
 }

@@ -229,7 +229,7 @@ void
 Scheduler::Print()
 {
     cout << "Ready list contents:\n";
-    readyList->Apply(ThreadPrint);
+    readyListRR->Apply(ThreadPrint);
 }
 
 
