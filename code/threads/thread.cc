@@ -511,7 +511,7 @@ Thread::getReadyTime(){
 void
 Thread::setBurstTime(double t){
     double prev = burst;
-    burst = ((t-startBurst) + prev)/2
+    burst = ((t-startBurst) + prev)/2;
     // t(i) = 0.5*T + 0.5*t(i-1)
 }
 
