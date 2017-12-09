@@ -37,6 +37,9 @@ Thread::Thread(char* threadName, int threadID)
 {
 	ID = threadID;
     name = threadName;
+    priority = kernel->getPri(ID);
+    burst = 0;
+    startBurst = 0;
     stackTop = NULL;
     stack = NULL;
     status = JUST_CREATED;
@@ -208,9 +211,52 @@ Thread::Yield ()
     DEBUG(dbgThread, "Yielding thread: " << name);
     
     nextThread = kernel->scheduler->FindNextToRun();
+
     if (nextThread != NULL) {
-	kernel->scheduler->ReadyToRun(this);
-	kernel->scheduler->Run(nextThread, FALSE);
+
+        if (nextThread->getPriority()>=100){
+
+                kernel->scheduler->ReadyToRun(this);
+                this->setReadyTime();
+                kernel->scheduler->Run(nextThread, FALSE);
+        }
+        else{
+
+            if(this->getBurstTime() <= nextThread->getBurstTime()){
+                kernel->scheduler->ReadyToRun(nextThread);    
+            }
+            else{
+                kernel->scheduler->ReadyToRun(this);
+                this->setReadyTime();
+                kernel->scheduler->Run(nextThread, FALSE);
+
+            }
+        }
+
+        else if (nextThread->getPriority()<=100 && nextThread->getPriority()>=50){
+            if(this->getPriority() >= nextThread->getPriority()){
+                kernel->scheduler->ReadyToRun(nextThread);
+            }
+            else{
+                kernel->scheduler->ReadyToRun(this);
+                this->setReadyTime();
+                kernel->scheduler->Run(nextThread, FALSE);                
+            }
+        }
+
+        else if (nextThread->getPriority() < 50){
+            if(this->getPriority() < 50){
+                kernel->scheduler->ReadyToRun(this);
+                this->setReadyTime();
+                kernel->scheduler->Run(nextThread, FALSE);  
+            }
+            else{
+                kernel->scheduler->Run(nextThread, FALSE);
+            }
+        }
+
+    cout << "Ticks" << kernel->stats->totalTicks <<  ": Thread(" << this->getName() << ")" << this->getID() 
+         << "is running" << endl; 
     }
     (void) kernel->interrupt->SetLevel(oldLevel);
 }
@@ -432,4 +478,56 @@ Thread::SelfTest()
     t->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
     kernel->currentThread->Yield();
     SimpleThread(0);
+}
+
+// Added------------------------------
+bool
+Thread::setPriority(int pri){
+    int old_priority = pri;
+    if(pri > 149 || pri < 0){
+        return false;
+    }
+    else{
+        priority = pri;
+        cout << "Ticks" << kernel->stats->totalTicks <<  ": Thread" << ID << "changes its priority from "
+        << old_priority <<  " to " << priority << endl;
+        return true;
+    }
+}
+
+int
+Thread::getPriority(){
+    return priority;
+}
+
+void
+Thread::setReadyTime(){
+    startReady = kernel->stats->totalTicks;
+}
+
+int
+Thread::getReadyTime(){
+    return startReady;
+}
+
+void
+Thread::setBurstTime(double t){
+    double prev = burst;
+    burst = ((t-startBurst) + prev)/2
+    // t(i) = 0.5*T + 0.5*t(i-1)
+}
+
+int
+Thread::getBurstTime(){
+    return burst;
+}
+
+void
+Thread::startBurst(){
+    startBurst = kernel->stats->totalTicks;
+}
+
+int
+Thread::getstartBurst(){
+    return startBurst;
 }
