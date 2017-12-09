@@ -119,7 +119,7 @@ Scheduler::FindNextToRun ()
     }
     else {
         Thread *front = readyListSJF->RemoveFront();
-        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << front->getID() << " is removed from queue L2" << endl;
+        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << front->getID() << " is removed from queue L1" << endl;
         return front;
     }
 /*
