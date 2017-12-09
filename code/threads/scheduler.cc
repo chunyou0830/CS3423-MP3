@@ -32,9 +32,9 @@
 Scheduler::Scheduler()
 { 
     //readyList = new List<Thread *>; 
-    readyListSJF = new SortedList<Thread *>(Thread::compBurst)
-    readyListPri = new SortedList<Thread *>(Thread::compPriority)
-    readyListRR = new List<Thread *>
+    readyListSJF = new SortedList<Thread *>(Thread::compBurst);
+    readyListPri = new SortedList<Thread *>(Thread::compPriority);
+    readyListRR = new List<Thread *>;
 
     toBeDestroyed = NULL;
 } 
