@@ -116,6 +116,18 @@ class Thread {
     ThreadStatus status;	// ready, running or blocked
     char* name;
 	int   ID;
+    static int comp_burst(Thread* t1, Thread* t2){
+        if(t1->getBurstTime() > t2->getBurstTime()) return -1;
+        else if(t1->getBurstTime() == t2->getBurstTime()) return 0;
+        else return 1;
+    }
+
+    static int comp_priority(Thread* t1, Thread* t2){
+        if(t1->getPriority() > t2->getPriority()) return 1;
+        else if (t1->getPriority() == t2->getPriority()) return 0;
+        else return -1;
+    }
+
     void StackAllocate(VoidFunctionPtr func, void *arg);
     				// Allocate a stack for thread.
 				// Used internally by Fork()

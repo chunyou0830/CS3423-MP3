@@ -48,7 +48,11 @@ Kernel::Kernel(int argc, char **argv)
 		} else if (strcmp(argv[i], "-e") == 0) {
         	execfile[++execfileNum]= argv[++i];
 			cout << execfile[execfileNum] << "\n";
-		} else if (strcmp(argv[i], "-ci") == 0) {
+		} else if (strcmp(argv[i], "-ep") == 0) {
+            execfile[++execfileNum]= argv[++i];
+            cout << execfile[execfileNum] << "\n";
+            priority[execfileNum] = atoi(argv[++i]);
+        } else if (strcmp(argv[i], "-ci") == 0) {
 	    	ASSERT(i + 1 < argc);
 	    	consoleIn = argv[i + 1];
 	    	i++;
@@ -308,4 +312,6 @@ int Kernel::CreateFile(char *filename)
 	return fileSystem->Create(filename);
 }
 
-
+int Kernel::getPri(int ID){
+    return priority[ID];
+}
