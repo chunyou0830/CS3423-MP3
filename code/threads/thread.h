@@ -138,6 +138,9 @@ class Thread {
     ThreadStatus status;	// ready, running or blocked
     char* name;
 	int   ID;
+    int   priority;
+    int   burst;
+    int   startBurst;
 
     void StackAllocate(VoidFunctionPtr func, void *arg);
     				// Allocate a stack for thread.

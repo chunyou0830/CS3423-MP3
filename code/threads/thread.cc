@@ -213,27 +213,25 @@ Thread::Yield ()
     nextThread = kernel->scheduler->FindNextToRun();
 
     if (nextThread != NULL) {
-
-        if (nextThread->getPriority()>=100){
-
+        if (nextThread->getPriority()>=100) {
+            if ( this->getPriority() < 100) {
                 kernel->scheduler->ReadyToRun(this);
                 this->setReadyTime();
                 kernel->scheduler->Run(nextThread, FALSE);
-        }
-        else{
-
-            if(this->getBurstTime() <= nextThread->getBurstTime()){
-                kernel->scheduler->ReadyToRun(nextThread);    
             }
-            else{
-                kernel->scheduler->ReadyToRun(this);
-                this->setReadyTime();
-                kernel->scheduler->Run(nextThread, FALSE);
-
+            else {
+                if(this->getBurstTime() <= nextThread->getBurstTime()){
+                    kernel->scheduler->ReadyToRun(nextThread);    
+                }
+                else{
+                    kernel->scheduler->ReadyToRun(this);
+                    this->setReadyTime();
+                    kernel->scheduler->Run(nextThread, FALSE);
+                }
             }
         }
 
-        else if (nextThread->getPriority()<=100 && nextThread->getPriority()>=50){
+        else if (nextThread->getPriority()<=100 && nextThread->getPriority()>50){
             if(this->getPriority() >= nextThread->getPriority()){
                 kernel->scheduler->ReadyToRun(nextThread);
             }
