@@ -203,6 +203,7 @@ Thread::Finish ()
 void
 Thread::Yield ()
 {
+    cout << "[DEBUG]\tEnter Thread::Yield()" << endl;
     Thread *nextThread;
     IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
     
@@ -487,7 +488,7 @@ Thread::setPriority(int pri){
     }
     else{
         priority = pri;
-        cout << "Ticks" << kernel->stats->totalTicks <<  ": Thread" << ID << "changes its priority from "
+        cout << "Ticks " << kernel->stats->totalTicks <<  ": Thread " << ID << "changes its priority from "
         << old_priority <<  " to " << priority << endl;
         return true;
     }
