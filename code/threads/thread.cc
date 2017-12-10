@@ -203,7 +203,7 @@ Thread::Finish ()
 void
 Thread::Yield ()
 {
-    cout << "[DEBUG]\tEnter Thread::Yield() " << kernel->stats->totalTicks << endl;
+    //cout << "[DEBUG]\tEnter Thread::Yield() " << kernel->stats->totalTicks << endl;
     Thread *nextThread;
     IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
     
@@ -232,7 +232,7 @@ Thread::Yield ()
             }
         }
 
-        else if (nextThread->getPriority()<=100 && nextThread->getPriority()>50){
+        else if (nextThread->getPriority()<100 && nextThread->getPriority()>=50){
             if(this->getPriority() >= nextThread->getPriority()){
                 kernel->scheduler->ReadyToRun(nextThread);
             }
@@ -250,7 +250,7 @@ Thread::Yield ()
                 kernel->scheduler->Run(nextThread, FALSE);  
             }
             else{
-                kernel->scheduler->Run(nextThread, FALSE);
+                kernel->scheduler->ReadyToRun(nextThread);
             }
         }
     }
@@ -479,13 +479,13 @@ Thread::SelfTest()
 // Added------------------------------
 bool
 Thread::setPriority(int pri){
-    int old_priority = pri;
+    int old_priority = priority;
     if(pri > 149 || pri < 0){
         return false;
     }
     else{
         priority = pri;
-        cout << "Ticks " << kernel->stats->totalTicks <<  ": Thread " << ID << "changes its priority from "
+        cout << "Tick " << kernel->stats->totalTicks <<  ": Thread " << ID << " changes its priority from "
         << old_priority <<  " to " << priority << endl;
         return true;
     }

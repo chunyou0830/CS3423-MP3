@@ -36,6 +36,7 @@ Kernel::Kernel(int argc, char **argv)
     reliability = 1;            // network reliability, default is 1.0
     hostName = 0;               // machine id, also UNIX socket name
                                 // 0 is the default machine id
+    priority = {0};
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-rs") == 0) {
  	    	ASSERT(i + 1 < argc);
@@ -313,5 +314,13 @@ int Kernel::CreateFile(char *filename)
 }
 
 int Kernel::getPri(int ID){
-    return priority[ID];
+	if (priority[ID]>149) {
+		return 149;
+	}
+	else if (priority[ID]<0) {
+		return 0;
+	}
+	else {
+		return priority[ID];
+	}
 }
