@@ -74,15 +74,15 @@ Scheduler::ReadyToRun (Thread *thread)
 
     if (cur_priority < 50) {
         readyListRR->Append(thread);
-        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << thread->getID() << " is inserted into queue L3" << endl;
+        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << thread->getID() << " is inserted into queue L3 (ReadyToRun)" << endl;
     }
     else if (cur_priority >= 50 && cur_priority < 100) {
         readyListPri->Insert(thread);
-        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << thread->getID() << " is inserted into queue L2" << endl;
+        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << thread->getID() << " is inserted into queue L2 (ReadyToRun)" << endl;
     }
     else if (cur_priority >= 100 && cur_priority < 150) {
         readyListSJF->Insert(thread);
-        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << thread->getID() << " is inserted into queue L1" << endl;
+        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << thread->getID() << " is inserted into queue L1 (ReadyToRun)" << endl;
     }
 }
 
@@ -97,12 +97,12 @@ Scheduler::ReadyToRun (Thread *thread)
 Thread *
 Scheduler::FindNextToRun ()
 {
-    cout << "[DEBUG]\tEnter Scheduler::FindNextToRun()" << endl;
+    //cout << "[DEBUG]\tEnter Scheduler::FindNextToRun()" << endl;
     ASSERT(kernel->interrupt->getLevel() == IntOff);
 
     Aging(readyListSJF, readyListPri, readyListRR);
 
-    if (readyListSJF->IsEmpty()) {
+    /*if (readyListSJF->IsEmpty()) {
         if (readyListPri->IsEmpty()) {
             if (readyListRR->IsEmpty()) {
                 return NULL;
@@ -123,6 +123,25 @@ Scheduler::FindNextToRun ()
         Thread *front = readyListSJF->RemoveFront();
         cout << "Tick " << kernel->stats->totalTicks << ": Thread " << front->getID() << " is removed from queue L1" << endl;
         return front;
+    }*/
+
+    if (!readyListSJF->IsEmpty()) {
+        Thread *front = readyListSJF->RemoveFront();
+        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << front->getID() << " is removed from queue L1 (FindNextToRun)" << endl;
+        return front;
+    }
+    else if (!readyListPri->IsEmpty()) {
+        Thread *front = readyListPri->RemoveFront();
+        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << front->getID() << " is removed from queue L2 (FindNextToRun)" << endl;
+        return front;
+    }
+    else if (!readyListRR->IsEmpty()) {
+        Thread *front = readyListRR->RemoveFront();
+        cout << "Tick " << kernel->stats->totalTicks << ": Thread " << front->getID() << " is removed from queue L3 (FindNextToRun)" << endl;
+        return front;
+    }
+    else{
+        return NULL;
     }
 /*
     if (readyList->IsEmpty()) {
@@ -267,9 +286,9 @@ Scheduler::Aging(SortedList<Thread *>* li1, SortedList<Thread *>* li2, List<Thre
             if(cur->getPriority()+10 >= 100){
                 cur->setPriority(cur->getPriority()+10);
                 kernel->scheduler->readyListPri->Remove(cur);
-                cout << "Tick" << kernel->stats->totalTicks << ": Thread " << cur->getID() << " is removed from queue L2" << endl;
+                cout << "Tick" << kernel->stats->totalTicks << ": Thread " << cur->getID() << " is removed from queue L2 (Aging)" << endl;
                 kernel->scheduler->readyListSJF->Insert(cur);
-                cout << "Tick" << kernel->stats->totalTicks << ": Thread " << cur->getID() << " is inserted into queue L1" << endl;
+                cout << "Tick" << kernel->stats->totalTicks << ": Thread " << cur->getID() << " is inserted into queue L1 (Aging)" << endl;
             }
             else{
                 cur->setPriority(cur->getPriority()+10);
@@ -284,9 +303,9 @@ Scheduler::Aging(SortedList<Thread *>* li1, SortedList<Thread *>* li2, List<Thre
             if(cur->getPriority()+10 >= 50){
                 cur->setPriority(cur->getPriority()+10);
                 kernel->scheduler->readyListRR->Remove(cur);
-                cout << "Tick" << kernel->stats->totalTicks << ": Thread " << cur->getID() << " is removed from queue L3" << endl;
+                cout << "Tick" << kernel->stats->totalTicks << ": Thread " << cur->getID() << " is removed from queue L3 (Aging)" << endl;
                 kernel->scheduler->readyListPri->Insert(cur);
-                cout << "Tick" << kernel->stats->totalTicks << ": Thread " << cur->getID() << " is inserted into queue L2" << endl;
+                cout << "Tick" << kernel->stats->totalTicks << ": Thread " << cur->getID() << " is inserted into queue L2 (Aging)" << endl;
             }
             else{
                 cur->setPriority(cur->getPriority()+10);
