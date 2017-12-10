@@ -203,7 +203,7 @@ Thread::Finish ()
 void
 Thread::Yield ()
 {
-    cout << "[DEBUG]\tEnter Thread::Yield()" << endl;
+    cout << "[DEBUG]\tEnter Thread::Yield() " << kernel->stats->totalTicks << endl;
     Thread *nextThread;
     IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
     
@@ -253,9 +253,6 @@ Thread::Yield ()
                 kernel->scheduler->Run(nextThread, FALSE);
             }
         }
-
-    cout << "Ticks" << kernel->stats->totalTicks <<  ": Thread(" << this->getName() << ")" << this->getID() 
-         << "is running" << endl; 
     }
     (void) kernel->interrupt->SetLevel(oldLevel);
 }
