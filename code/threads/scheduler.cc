@@ -195,7 +195,7 @@ Scheduler::Run (Thread *nextThread, bool finishing)
     DEBUG(dbgThread, "Switching from: " << oldThread->getName() << " to: " << nextThread->getName());
     
     cout << "Tick " << kernel->stats->totalTicks << ": Thread " << nextThread->getID() << " is now selected for execution" << endl;
-    cout << "Tick " << kernel->stats->totalTicks << ": Thread " << oldThread->getID() << " is replaced, and it has executed" << endl;
+    cout << "Tick " << kernel->stats->totalTicks << ": Thread " << oldThread->getID() << " is replaced, and it has executed " << kernel->stats->totalTicks-oldThread->getStartBurst() << " ticks" << endl;
 
     if (oldThread->getStartBurst() != 0) {
         oldThread->setBurstTime(kernel->stats->totalTicks);
