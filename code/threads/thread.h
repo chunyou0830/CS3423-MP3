@@ -112,7 +112,7 @@ class Thread {
     int getPriority();
     void setReadyTime();
     int getReadyTime();
-    void setBurstTime(double t);
+    void setBurstTime(double sb, double b);
     int getBurstTime();
     void setStartBurst();
     int getStartBurst();

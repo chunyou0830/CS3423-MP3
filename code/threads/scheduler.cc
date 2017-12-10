@@ -198,12 +198,14 @@ Scheduler::Run (Thread *nextThread, bool finishing)
     cout << "Tick " << kernel->stats->totalTicks << ": Thread " << oldThread->getID() << " is replaced, and it has executed " << kernel->stats->totalTicks-oldThread->getStartBurst() << " ticks" << endl;
 
     if (oldThread->getStartBurst() != 0) {
-        oldThread->setBurstTime(kernel->stats->totalTicks);
+        cout << "Thread" << oldThread->getName() << " startBurst Time is " << oldThread->getStartBurst() << endl;
+	nextThread->setBurstTime(oldThread->getStartBurst(), oldThread->getBurstTime());
     }
     else {
+	cout << "Thread setting startburst " << oldThread->getName() << endl;
         oldThread->setStartBurst();
     }
-
+	cout << "Thread " << kernel->currentThread->getName() << " startBurst time has been set to curr tick:" << kernel->stats->totalTicks << endl;
     kernel->currentThread->setStartBurst();
     // This is a machine-dependent assembly language routine defined 
     // in switch.s.  You may have to think
